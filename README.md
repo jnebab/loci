@@ -1,11 +1,27 @@
 # 🏛 loci
 
-**A memory palace for your codebase.** The ancient *method of loci* works by
-placing memories at locations you can walk back through. loci does the same
-for engineering knowledge: every verified learning is placed at a node in a
-knowledge graph, every new task starts by walking the palace — and rtk
-compresses the shell output in between. Knowledge compounds; every task makes
-the next one cheaper.
+**A complete, token-efficient engineering workflow for Claude Code** — one
+loop that carries every task from **recall** (what do we already know?)
+through **analysis** (brainstorm features, root-cause bugs), **planning**,
+**interactive visual review**, **execution** (TDD + verification), to
+**knowledge capture and sharing** — with compressed shell output the whole
+way through.
+
+It's named after the ancient *method of loci* — the memory palace — because
+that's the mechanic that makes the loop compound: every verified learning is
+placed at a node in a knowledge graph, and every new task starts by walking
+it. But the memory is one stage of six; the product is the whole loop.
+
+| Stage | What happens | Powered by |
+|---|---|---|
+| 1 · Recall | One budget-capped graph query answers "have we seen this before, and what code is involved?" | graphify |
+| 2 · Think | Features get brainstormed to an approved design; bugs get root-caused before any fix | your process skills (e.g. superpowers) |
+| 3 · Plan + Review | Written plan, rendered as an interactive HTML artifact you annotate; feedback flows back automatically | writing-plans + lavish (axi) |
+| 4 · Build | TDD, verification-before-completion, model routing | your process skills |
+| 5 · Compound | Verified learnings (root cause + proof) captured to `docs/solutions/` | `/compound` (bundled) |
+| 6 · Map | Learnings + code folded into the graph the next task recalls from | graphify |
+| ⚡ everywhere | Shell output compressed 60–90%, losslessly | rtk |
+| 👁 on demand | "Explain / visualize / compare this" → interactive annotatable artifact | lavish (axi) |
 
 ```mermaid
 flowchart TD

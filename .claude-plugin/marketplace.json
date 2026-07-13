@@ -8,7 +8,7 @@
     {
       "name": "loci",
       "source": "./",
-      "description": "A memory palace for your codebase: graph recall, compressed shell output, verified learning capture."
+      "description": "Complete token-efficient engineering workflow: recall -> analyze -> plan -> visual review -> build -> compound learnings into a knowledge graph."
     }
   ]
 }

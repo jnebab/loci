@@ -1,7 +1,7 @@
 {
   "name": "loci",
-  "version": "1.1.0",
-  "description": "A memory palace for your codebase: budget-capped knowledge-graph recall (graphify), compressed shell output (rtk), and verified learning capture. Every task makes the next one cheaper.",
+  "version": "1.1.1",
+  "description": "Complete token-efficient engineering workflow for Claude Code: recall (knowledge-graph query) -> analyze -> plan -> interactive visual review -> build (TDD + verification) -> capture and map verified learnings. Compressed shell output throughout; every task makes the next one cheaper.",
   "author": {
     "name": "John Carl Nebab",
     "url": "https://github.com/jnebab"
