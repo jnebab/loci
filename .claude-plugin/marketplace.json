@@ -1,12 +1,12 @@
 {
-  "name": "loci",
+  "name": "loci-flow",
   "owner": {
     "name": "John Carl Nebab",
     "url": "https://github.com/jnebab"
   },
   "plugins": [
     {
-      "name": "loci",
+      "name": "loci-flow",
       "source": "./",
       "description": "Complete token-efficient engineering workflow: recall -> analyze -> plan -> visual review -> build -> compound learnings into a knowledge graph."
     }

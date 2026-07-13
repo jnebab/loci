@@ -1,4 +1,4 @@
-# 🏛 loci
+# 🏛 loci-flow
 
 **A complete, token-efficient engineering workflow for Claude Code** — one
 loop that carries every task from **recall** (what do we already know?)
@@ -7,7 +7,7 @@ through **analysis** (brainstorm features, root-cause bugs), **planning**,
 **knowledge capture and sharing** — with compressed shell output the whole
 way through.
 
-It's named after the ancient *method of loci* — the memory palace — because
+The *loci* half of the name is the ancient *method of loci* — the memory palace — because
 that's the mechanic that makes the loop compound: every verified learning is
 placed at a node in a knowledge graph, and every new task starts by walking
 it. But the memory is one stage of six; the product is the whole loop.
@@ -51,7 +51,7 @@ Token efficiency has two time horizons, and most tools only address one:
 | **Within a session** | Deterministic, lossless compression of shell output (60–90% on git/test/lint) | [rtk](https://github.com/rtk-ai/rtk) |
 | **Across sessions** | Learnings + code mapped into a graph; recall is one budget-capped query instead of re-grepping and re-reading | [graphify](https://github.com/Graphify-Labs/graphify) |
 
-loci wires both into one loop, with two hard rules that keep it honest:
+loci-flow wires both into one loop, with two hard rules that keep it honest:
 
 - **No lossy compression, no per-turn context taxes.** rtk is rule-based
   (never an ML model rewriting your context); graph recall has a hard token
@@ -64,8 +64,8 @@ loci wires both into one loop, with two hard rules that keep it honest:
 ## Install
 
 ```
-/plugin marketplace add jnebab/loci
-/plugin install loci@loci
+/plugin marketplace add jnebab/loci-flow
+/plugin install loci-flow@loci-flow
 ```
 
 Then, in any project or workspace you want the loop:
