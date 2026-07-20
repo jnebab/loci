@@ -1,6 +1,10 @@
 ---
 name: workflow-init
 description: Use when the user asks to set up the compounding token-efficient workflow (rtk + graphify + docs/solutions + loop rules) in a directory or repo — triggers on "/workflow-init", "set up the compound workflow here", "make this repo compound".
+license: MIT
+metadata:
+  author: jnebab
+  version: "1.0"
 ---
 
 # Workflow Init

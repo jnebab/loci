@@ -1,6 +1,10 @@
 ---
 name: compound
 description: Use after solving a non-obvious bug, making an architectural decision, or discovering a project gotcha — triggers on "/compound", "log this learning", "remember this fix", "add to solutions", or during handoff when the session produced a reusable lesson. Appends a categorized entry to docs/solutions/ so future sessions start smarter instead of rediscovering the same fix.
+license: MIT
+metadata:
+  author: jnebab
+  version: "1.0"
 ---
 
 # Compound
