@@ -135,6 +135,7 @@ everything project-scoped — it never touches your global `~/.claude` config.
 |---|---|---|
 | [rtk](https://github.com/rtk-ai/rtk) | `brew install rtk` | prebuilt binary from releases, or `cargo install rtk` |
 | [graphify](https://github.com/Graphify-Labs/graphify) | `pip install graphifyy` | `py -m pip install graphifyy` (Windows) |
+| [Ollama](https://ollama.com) (optional — powers the local semantic pass) | `brew install ollama` + `ollama pull qwen3:4b` | Windows: installer from ollama.com/download or `winget install Ollama.Ollama` · Linux: `curl -fsSL https://ollama.com/install.sh \| sh` — then `ollama pull qwen3:4b` |
 
 Optional but recommended: the [superpowers](https://github.com/obra/superpowers)
 plugin (brainstorming, systematic-debugging, writing-plans, TDD, verification)
@@ -151,20 +152,17 @@ for the think/plan/build stages, and a visual plan-review tool such as
 - **`/compound`** — captures a verified learning (bug / decision / gotcha /
   pattern) as a ≤30-line markdown entry with mandatory root cause and
   verification, then places it in the graph.
-- **`/viz`** — generates and opens graphify's interactive community-graph
-  visualization (`graph.html`) for any graphed target: force-directed map,
-  community sidebar with toggles, LLM-named clusters (via the claude CLI —
-  no API key needed). Warns and offers the lighter `graphify tree` view
-  past ~5000 nodes.
 - **Reference templates** — CLAUDE.md loop-rules block, solutions README,
   rtk hook JSON.
 
 ## Design notes
 
 - **Code graphs are free.** graphify parses code with tree-sitter locally —
-  zero LLM tokens. Only `docs/solutions/` markdown needs a semantic pass
-  (Gemini key if available, otherwise the session model — never blocked on
-  an API key).
+  zero LLM tokens. Only `docs/solutions/` markdown needs a semantic pass —
+  **local Ollama by default** (free, on-device, nothing leaves the machine);
+  Claude or Gemini API keys as cloud alternatives. Always an explicit
+  `--backend` — graphify's auto-detect silently uses whatever key is in
+  the env.
 - **Graphs live under `graphify-out/targets/<name>` and merge** via
   `graphify merge-graphs` into one workspace graph — repos stay clean of
   generated files.

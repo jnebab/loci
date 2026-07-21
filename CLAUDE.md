@@ -37,17 +37,22 @@
 
 ## Workspace facts
 
-- **No graph built yet** — this repo is small; per the small-repo rule the
-  graph waits until docs/solutions/ accumulates entries. Until then steps
-  1 and 5 are dormant: recall from docs/solutions/ by reading it directly.
+- **No graph yet — store is small; recall = read docs/solutions/ directly**
+  (steps 1 and 5 of the loop stay dormant until it grows). If/when graphing:
+  semantic pass runs LOCALLY via Ollama (installed + approved 2026-07-22,
+  superseding the earlier no-backend decision) —
+  `OLLAMA_API_KEY=local OLLAMA_BASE_URL=http://localhost:11434/v1
+  graphify extract docs/solutions --backend ollama --model qwen3:4b
+  --max-concurrency 1` — the `/v1` suffix is required. NEVER bare
+  `graphify extract`: its backend auto-detect silently grabs whatever API
+  key is in the env.
 - graphify-out/ is machine-generated (and deny-listed from reads in
   .claude/settings.json) — never read it directly; use `graphify query` /
   `graphify explain`.
-- Visual graph map: `/viz [target]` generates/opens the interactive
-  community visualization for a graphed target (graphify cluster-only +
-  `label --backend=claude-cli` under the hood). Offer it when the user asks
-  to "see" the codebase structure, communities, or how things connect;
-  >5000 nodes → suggest `graphify tree` instead.
+- Visual graph map: `graphify tree` emits a local, collapsible-tree HTML
+  view of a graphed target — offer it when the user asks to "see" the
+  codebase structure or how things connect. No LLM involved. (The /viz
+  command was removed 2026-07-22 with the no-graph decision.)
 
 <!-- rtk-instructions v2 -->
 ## RTK (token-optimized command output)

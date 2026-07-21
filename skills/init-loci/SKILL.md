@@ -26,6 +26,7 @@ Works on a single repo or a workspace folder containing multiple repos
 |---|---|---|
 | rtk | `rtk --version` | macOS: `brew install rtk` · Windows/Linux: prebuilt binary from github.com/rtk-ai/rtk releases, or `cargo install rtk` |
 | graphify | `graphify --version` | `pip install graphifyy` (double-y; the single-y PyPI package is unrelated). Windows: `py -m pip install graphifyy` |
+| ollama (optional — semantic-pass default) | `ollama --version` | see "Ollama setup" section below |
 
 Process skills (brainstorming, systematic-debugging, writing-plans, TDD,
 verification) come from the superpowers plugin if installed; the loop rules
@@ -78,17 +79,50 @@ reference them but do not require them.
    `graphify extract <target> --code-only --out graphify-out/targets/<name>`
    — local tree-sitter AST, zero LLM tokens, so repos stay clean of
    generated files.
-   For `docs/solutions/` markdown (needs a semantic LLM pass): with
-   `GEMINI_API_KEY` set use `graphify extract docs/solutions --backend gemini
-   --out graphify-out/targets/docs-solutions`; without a key, run the
-   graphify skill's subagent extraction with the session model — never block
-   on an API key.
+   For `docs/solutions/` markdown (needs a semantic LLM pass) — ALWAYS pass
+   an explicit `--backend`; a bare `graphify extract` silently auto-detects
+   whatever API key sits in the env and sends the corpus there.
+   - **Default — Ollama, fully local** (free, nothing leaves the machine;
+     setup below):
+     `OLLAMA_API_KEY=local OLLAMA_BASE_URL=http://localhost:11434/v1 graphify extract docs/solutions --backend ollama --model qwen3:4b --max-concurrency 1 --out graphify-out/targets/docs-solutions`
+     The `/v1` suffix is REQUIRED — without it every chunk fails with
+     `404 page not found` (graphify speaks Ollama's OpenAI-compatible
+     endpoint, not its native API).
+   - **Alternative — Claude API:** `ANTHROPIC_API_KEY` set →
+     `--backend claude --model claude-haiku-4-5` (pay-per-token; a ≤30-line
+     entry costs a fraction of a cent; separate billing from a Claude
+     subscription).
+   - **Alternative — Gemini:** `GEMINI_API_KEY` set → `--backend gemini`
+     (free-tier request data may be used by Google to improve products;
+     paid tier is excluded — check which tier the key is on).
    Merge everything into the default query graph:
    `graphify merge-graphs graphify-out/targets/*/graphify-out/graph.json --out graphify-out/graph.json`
 6. **Verify end-to-end (the pass/fail gate)** — write or copy one learning
    into `docs/solutions/`, map it (step 5's semantic pass + remerge), then
    `graphify query "<its topic>" --budget 1000` must retrieve its root
    cause/fix. Not verified = not done.
+
+## Ollama setup (the semantic-pass default)
+
+One-time, no account, no subscription, no per-token cost — the model runs
+on the user's machine (~2 GB disk for the baseline model).
+
+| OS | Install + start server | Then |
+|---|---|---|
+| macOS | `brew install ollama` then `brew services start ollama` (or the Ollama.app installer from ollama.com/download — the app runs the server itself) | `ollama pull qwen3:4b` |
+| Linux | `curl -fsSL https://ollama.com/install.sh \| sh` (installs a systemd service; else run `ollama serve`) | `ollama pull qwen3:4b` |
+| Windows | Installer from ollama.com/download/windows, or `winget install Ollama.Ollama` — the app auto-starts the server (tray icon) | `ollama pull qwen3:4b` in any terminal |
+
+Verify: `curl http://localhost:11434/api/version` returns a version JSON.
+Then extraction needs exactly two env vars on the command:
+`OLLAMA_BASE_URL=http://localhost:11434/v1` (the `/v1` is mandatory) and
+`OLLAMA_API_KEY=<any non-empty value>` (a formality — nothing checks it).
+Keep `--max-concurrency 1` for local servers.
+
+Quality note: `qwen3:4b` is the tested baseline and produces sparser
+graphs than the cloud backends (fewer inferred conceptual edges). If the
+machine has RAM to spare, `ollama pull qwen3:8b` and `--model qwen3:8b`
+extracts richer graphs; the store's ≤30-line entries keep either fast.
 
 ## Keeping the graph current
 

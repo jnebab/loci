@@ -26,7 +26,11 @@
    there before re-debugging anything.
 5. **Map after compounding.** After /compound writes or updates an entry,
    re-run the docs semantic pass (extraction cache skips unchanged files;
-   working dir graphify-out/targets/docs-solutions), then remerge:
+   working dir graphify-out/targets/docs-solutions) — always with an
+   explicit `--backend` (default `--backend ollama`, with
+   `OLLAMA_BASE_URL=http://localhost:11434/v1` — the /v1 is required;
+   never bare `graphify extract`, its auto-detect grabs env API keys),
+   then remerge:
    `graphify merge-graphs graphify-out/targets/*/graphify-out/graph.json --out graphify-out/graph.json`
    After code changes in a graphed repo: `graphify update <repo>` (free,
    no LLM), then the same remerge.
@@ -42,11 +46,9 @@
 - graphify-out/ is machine-generated (and deny-listed from reads in
   .claude/settings.json) — never read it directly; use `graphify query` /
   `graphify explain`.
-- Visual graph map: `/viz [target]` generates/opens the interactive
-  community visualization for a graphed target (graphify cluster-only +
-  `label --backend=claude-cli` under the hood). Offer it when the user asks
-  to "see" the codebase structure, communities, or how things connect;
-  >5000 nodes → suggest `graphify tree` instead.
+- Visual graph map: `graphify tree` emits a local, collapsible-tree HTML
+  view of a graphed target — offer it when the user asks to "see" the
+  codebase structure or how things connect. No LLM involved.
 
 <!-- rtk-instructions v2 -->
 ## RTK (token-optimized command output)
