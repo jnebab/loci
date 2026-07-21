@@ -37,7 +37,7 @@ const ACTION_HINT =
 
 // Per-model rates in USD per 1M tokens: [input, output]. Cache is derived from
 // the input rate: read = 0.1x, 5-minute cache write = 1.25x, 1-hour = 2x.
-// DATED 2026-07-21 — update when Anthropic pricing or model names change.
+// DATED 2026-07-22 — update when Anthropic pricing or model names change.
 // An unknown model is shown in tokens with "(price n/a: <model>)" rather than
 // a wrong dollar figure.
 const PRICES = {
@@ -46,7 +46,7 @@ const PRICES = {
   "claude-opus-4-8": [5, 25],
   "claude-opus-4-7": [5, 25],
   "claude-opus-4-6": [5, 25],
-  "claude-sonnet-5": [3, 15],
+  "claude-sonnet-5": [2, 10], // intro pricing through 2026-08-31; then [3, 15]
   "claude-sonnet-4-6": [3, 15],
   "claude-haiku-4-5": [1, 5],
 };
@@ -95,12 +95,13 @@ function main() {
     bail();
   }
 
-  let costUsd = 0; // cumulative, across every turn
-  let contextTokens = 0; // latest assistant turn's total input (context depth)
-  let sawUnknownModel = null; // remember one unknown model id, if any
-  let sawAnyUsage = false;
-
+  // One API response is written as one JSONL line PER CONTENT BLOCK, each line
+  // repeating the same message.id and usage. Keep only the last line per id —
+  // summing per-line overcounts (measured 1.53x on a real session).
+  const byId = new Map();
+  let lineNo = 0;
   for (const line of contents.split("\n")) {
+    lineNo++;
     if (!line.trim()) continue;
     let ev;
     try {
@@ -109,9 +110,17 @@ function main() {
       continue;
     }
     if (!ev || ev.type !== "assistant" || !ev.message || !ev.message.usage) continue;
+    byId.set(ev.message.id || ev.uuid || `line-${lineNo}`, ev.message);
+  }
 
-    const u = ev.message.usage;
-    const model = ev.message.model || "unknown";
+  let costUsd = 0; // cumulative, across every turn
+  let contextTokens = 0; // latest assistant turn's total input (context depth)
+  let sawUnknownModel = null; // remember one unknown model id, if any
+  let sawAnyUsage = false;
+
+  for (const msg of byId.values()) {
+    const u = msg.usage;
+    const model = msg.model || "unknown";
     const inTok = u.input_tokens || 0;
     const cacheRead = u.cache_read_input_tokens || 0;
     const cacheCreate = u.cache_creation_input_tokens || 0;

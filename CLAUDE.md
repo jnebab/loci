@@ -1,6 +1,4 @@
-<!-- loci: append this to the project/workspace CLAUDE.md.
-     Adjust the plan-review line to the user's visual-review tool, and
-     delete lines that don't apply. -->
+# loci-flow — project rules
 
 ## The compounding loop (every task)
 
@@ -17,7 +15,7 @@
    as a diagram/table/comparison than prose — ask one question: interactive
    HTML, or markdown? HTML → render via lavish (`npx -y lavish-axi <file>`),
    then poll for annotations. Markdown → apply the `i-have-adhd` skill if
-   installed, plus `${CLAUDE_PLUGIN_ROOT}/skills/init-loci/references/markdown-output.md`
+   installed, plus `skills/init-loci/references/markdown-output.md`
    (its rules alone carry this path if `i-have-adhd` isn't installed).
    Applies to plan reviews (step 2) and standalone explanations alike;
    don't answer in prose what's clearer drawn or structured.
@@ -39,6 +37,9 @@
 
 ## Workspace facts
 
+- **No graph built yet** — this repo is small; per the small-repo rule the
+  graph waits until docs/solutions/ accumulates entries. Until then steps
+  1 and 5 are dormant: recall from docs/solutions/ by reading it directly.
 - graphify-out/ is machine-generated (and deny-listed from reads in
   .claude/settings.json) — never read it directly; use `graphify query` /
   `graphify explain`.
@@ -51,7 +52,7 @@
 <!-- rtk-instructions v2 -->
 ## RTK (token-optimized command output)
 
-A PreToolUse hook (.claude/settings.json) auto-rewrites Bash commands
+A PreToolUse hook (.claude/settings.local.json) auto-rewrites Bash commands
 through `rtk`, compressing git/test/lint/build output 60-90% — no action
 needed. If the hook is unavailable, prefix commands with `rtk` manually
 (safe passthrough for unknown commands). Meta: `rtk gain` (savings stats),

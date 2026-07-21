@@ -44,9 +44,14 @@ reference them but do not require them.
    subdirectories and copy
    `${CLAUDE_PLUGIN_ROOT}/skills/init-loci/references/solutions-readme.md`
    to `docs/solutions/README.md`.
-3. **.claudeignore** — MUST contain `graphify-out/` BEFORE any extraction.
-   Skipping this invalidates the prompt cache on every graph rebuild and
-   silently erases the workflow's token savings.
+3. **Deny-list graphify-out/ (project settings)** — merge
+   `{"permissions": {"deny": ["Read(./graphify-out/**)"]}}` into
+   `.claude/settings.json` (create it if absent; step 4 merges into the
+   same file). Generated graph JSON is large and machine-readable only —
+   the deny rule stops accidental greps/reads from dumping it into
+   context; recall goes through `graphify query` instead. Do NOT use a
+   `.claudeignore` file — it is not a Claude Code mechanism (permission
+   deny rules are the official exclusion) and protects nothing.
 4. **rtk hook (project-scoped, NOT global)** — merge the contents of
    `${CLAUDE_PLUGIN_ROOT}/skills/init-loci/references/settings-hook.json`
    into `.claude/settings.json` (create it if absent; if it exists, add the

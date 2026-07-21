@@ -144,10 +144,10 @@ for the think/plan/build stages, and a visual plan-review tool such as
 ## What's in the box
 
 - **`/init-loci`** — builds the palace in a project/workspace: loop rules
-  in CLAUDE.md, `docs/solutions/` learning store, `.claudeignore`
-  (prompt-cache protection), project-scoped rtk hook, per-target graphify
-  graphs merged into one queryable workspace graph, and an end-to-end
-  verification gate.
+  in CLAUDE.md, `docs/solutions/` learning store, a read deny-rule for
+  `graphify-out/` (project settings), project-scoped rtk hook, per-target
+  graphify graphs merged into one queryable workspace graph, and an
+  end-to-end verification gate.
 - **`/compound`** — captures a verified learning (bug / decision / gotcha /
   pattern) as a ≤30-line markdown entry with mandatory root cause and
   verification, then places it in the graph.
@@ -168,9 +168,10 @@ for the think/plan/build stages, and a visual plan-review tool such as
 - **Graphs live under `graphify-out/targets/<name>` and merge** via
   `graphify merge-graphs` into one workspace graph — repos stay clean of
   generated files.
-- **`.claudeignore` must contain `graphify-out/` before the first extract**,
-  or every rebuild invalidates Claude Code's prompt cache and silently eats
-  the savings.
+- **`graphify-out/` is deny-listed from reads** (`permissions.deny` in the
+  project's `.claude/settings.json`) — generated graph JSON never enters
+  context by accident; recall goes through budget-capped queries. (A
+  `.claudeignore` file would do nothing — it isn't a Claude Code mechanism.)
 - **Installer overreach is reverted by design.** Both rtk's and graphify's
   installers default to mutating global config; `/init-loci` keeps
   everything project-scoped and undoes what the installers globalize.

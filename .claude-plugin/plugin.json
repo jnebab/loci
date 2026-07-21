@@ -1,6 +1,6 @@
 {
   "name": "loci-flow",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Complete token-efficient engineering workflow for Claude Code: recall (knowledge-graph query) -> analyze -> plan -> interactive visual review -> build (TDD + verification) -> capture and map verified learnings -> handoff. Compressed shell output throughout; every task makes the next one cheaper. Optional per-turn usage meter.",
   "author": {
     "name": "John Carl Nebab",
